@@ -42,6 +42,11 @@ start:
 	jmp 0x0000:0x7E00
 	;done
     ; Task 6: Add boot signature at byte 510-511
+
+
+    times 510-($-$$) db 0
+    dw 0xAA55
+
 .disk_err:
 	mov si, err_msg
 	call print_str
@@ -49,7 +54,7 @@ start:
 	
 print_str:
 	lodsb
-	cmp al, 0
+	test al, al
 	je .done
 	mov ah, 0x0E
 	xor	bh, bh
@@ -59,6 +64,3 @@ print_str:
 	ret
 	
 err_msg db 'E', 0
-
-    times 510-($-$$) db 0
-    dw 0xAA55
